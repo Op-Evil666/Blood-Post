@@ -1,7 +1,7 @@
 const rateLimit = require("express-rate-limit");
 
 const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
+    windowMs: 2 * 60 * 60 * 1000,
     limit: 10,
     skipSuccessfulRequests: true,
     message: {
@@ -10,4 +10,40 @@ const loginLimiter = rateLimit({
     }
 });
 
-module.exports = loginLimiter;
+const refreshLimiter = rateLimit({
+    windowMs: 30 * 60 * 60 * 1000,
+    limit: 10,
+    message: {
+        success: false,
+        message: "Too many Attempts. Try agan later"
+    }
+});
+
+const registerLimiter = rateLimit({
+    windowMs: 2 * 60 * 60 * 1000,
+    limit: 10,
+    message: {
+        success: false,
+        message: "Too many attempts. Try again later"
+    }
+});
+
+const postLimiter = rateLimit({
+    windowMs: 4 * 60 * 60 * 1000,
+    limit: 5,
+    message: {
+        success: false,
+        message: "Too many attempts. Try again later"
+    }
+});
+
+const apiLimiter = rateLimit({
+    windowMs: 1 * 60 * 60 * 1000,
+    limit: 20,
+    message: {
+        success: false,
+        message: "Too many attempts. Try again later"
+    }
+});
+
+module.exports = { loginLimiter, refreshLimiter, registerLimiter, postLimiter, apiLimiter };

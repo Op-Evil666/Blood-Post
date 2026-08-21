@@ -7,12 +7,13 @@ const logout = require("../Controllers/logoutUser");
 const meController = require("../Controllers/meController");
 const { validate } = require("../Middlewares/schemaMiddleware");
 const authenticate = require("../Middlewares/authMiddleware");
-const loginLimiter = require("../Middlewares/rateLimitMiddleware");
+const { registerLimiter, loginLimiter, refreshLimiter, apiLimiter } = require("../Middlewares/rateLimitMiddleware");
 const { registerSchema, loginSchema } = require("../Schemas/authSchema");
 
-router.post("/register", validate(registerSchema, "body"), registerUser);
+router.use(apiLimiter);
+router.post("/register", registerLimiter, validate(registerSchema, "body"), registerUser);
 router.post("/login", loginLimiter, validate(loginSchema, "body"), loginUser);
-router.post("/refresh", refreshUser);
+router.post("/refresh", refreshLimiter, refreshUser);
 router.post("/logout", logout);
 router.get("/me", authenticate, meController);
 
