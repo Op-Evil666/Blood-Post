@@ -22,12 +22,13 @@ const loginUser = async (req, res) =>{
                 message: "Invalid credentials"
             });
         }
-        const accessToken = generateAccessToken(user._id);
+        const accessToken = generateAccessToken(user._id, user.role);
         const refreshToken = generateRefreshToken();
         const hashedToken = hashRefreshToken(refreshToken);
         const tokenFamilyId = UUID.v4();
         await TokenFamily.create({
             user: user._id,
+            role: user.role,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             tokenHash: hashedToken,
             familyId: tokenFamilyId,

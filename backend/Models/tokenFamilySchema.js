@@ -7,6 +7,11 @@ const tokenFamilySchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    role:{
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    },
     familyId:{
         type: String,
         required: true,

@@ -1,10 +1,16 @@
+const logger = require("../Utils/logger");
+
 const errorMiddleware = (err, req, res, next) => {
 
-    console.error(err);
+    logger.error(err);
 
-    return res.status(500).json({
+    const statusCode = err.statusCode || 500;
+
+    return res.status(statusCode).json({
         success: false,
-        message: "Internal server error"
+        message: statusCode === 500 
+        ? "Internal server error" 
+        : err.message
     });
 };
 

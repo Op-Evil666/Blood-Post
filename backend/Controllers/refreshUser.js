@@ -19,7 +19,7 @@ const refreshUser = async (req, res) =>{
             message: "Expired or revoked token"
         });
     }
-    const accessToken = generateAccessToken(valid.user);
+    const accessToken = generateAccessToken(valid.user, valid.role);
     const newToken = generateRefreshToken();
     const newHash = hashRefreshToken(newToken);
     await TokenFamily.findByIdAndUpdate(
