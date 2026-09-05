@@ -4,23 +4,20 @@ const { setRefreshTokenCookie } = require("../Utils/cookieUtils");
 const UUID = require("uuid");
 const User = require("../Models/userSchema");
 const TokenFamily = require("../Models/tokenFamilySchema");
+const AppError = require("../Utils/appError");
 
 const loginUser = async (req, res) =>{
     const { email, password } = req.body;
-    try{
         const user = await User.findOne({ email }).select("+password");
         if(!user){
-            return res.status(401).json({
-                success: false,
-                message: "Invalid credentials"
-            });
+            throw new AppError("Invalid credentials", 401);
+        }
+        if(!user.isVerified){
+            throw new AppError("Please verify your email before logging in", 401);
         }
         const isValidPassword = await verifyPassword(password, user.password);
         if(!isValidPassword){
-            return res.status(401).json({
-                success: false,
-                message: "Invalid credentials"
-            });
+            throw new AppError("Invalid credentials", 401);
         }
         const accessToken = generateAccessToken(user._id, user.role);
         const refreshToken = generateRefreshToken();
@@ -36,19 +33,13 @@ const loginUser = async (req, res) =>{
             revokedAt: null
         });
         setRefreshTokenCookie(res, refreshToken);
+        user.lastLogin = new Date();
+        await user.save();
         return res.status(200).json({
             success: true,
             message: "Login successful",
             accessToken
         });
-    }
-    catch(err){
-        console.log(err);
-        return res.status(500).json({
-            success: false,
-            message: "Internal server error"
-        });
-    }
 }
 
 module.exports = { loginUser };

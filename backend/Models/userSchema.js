@@ -25,8 +25,26 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type: String,
-        enum: ["user", "admin"],
+        enum: ["user", "admin", "owner"],
         default: "user"
+    },
+    isVerified:{
+        type: Boolean,
+        default: false
+    },
+    verificationOtpHash:{
+        type: String,
+        default: null,
+        select: false
+    },
+    verificationTopExpiresAt:{
+        type: Date,
+        default: null,
+        select: false
+    },
+    lastLogin:{
+        type: Date,
+        default: null
     }
 },
 {

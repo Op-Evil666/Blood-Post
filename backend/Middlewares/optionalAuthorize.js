@@ -1,4 +1,5 @@
 const { verifyAccessToken } = require("../Utils/tokenUtils");
+const AppError = require("../Utils/appError");
 
 const optionalAuthorize = (req, res, next) =>{
         const authHeader = req.headers.authorization;
@@ -8,10 +9,7 @@ const optionalAuthorize = (req, res, next) =>{
         }
         const [scheme, token] = authHeader.split(" ");
         if(scheme !== "Bearer" || !token){
-            return res.status(401).json({
-                success: false,
-                message: "Invalid token"
-            });
+            throw new AppError("Invalid token", 401);
         }
         try{
         const payload = verifyAccessToken(token);
@@ -19,10 +17,7 @@ const optionalAuthorize = (req, res, next) =>{
         next();
         }
         catch(error){
-            return res.status(401).json({
-                success: false,
-                message: "Invalid or Expired token"
-            });
+            throw new AppError("Invalid or expired token", 401);
     }
 }
 

@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./Routes/authRoutes");
 const postRoutes = require("./Routes/postRoutes");
+const adminRoutes = require("./Routes/adminRoutes");
 const errorMiddleware = require("./Middlewares/errorMiddleware");
 const logger = require("./Utils/logger");
 const pinoHttp = require("pino-http");
@@ -13,7 +14,7 @@ app.use(express.json({limit: "10kb"}));
 app.use(helmet());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 app.use(pinoHttp({ logger,
@@ -30,9 +31,11 @@ app.get("/", (req, res) =>{
         message: "Welcome to the Blog API"
     });
 });
-app.use("/api/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
-app.use("/api/posts", postRoutes);
+app.use("/api/v1/posts", postRoutes);
+
+app.use("/api/v1/admin", adminRoutes);
 
 app.use(errorMiddleware);
 

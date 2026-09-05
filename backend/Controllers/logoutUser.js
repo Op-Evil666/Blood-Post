@@ -1,23 +1,17 @@
 const { hashRefreshToken } = require("../Utils/tokenUtils");
 const TokenFamily = require("../Models/tokenFamilySchema");
 const { clearRefreshTokenCookie } = require("../Utils/cookieUtils");
+const AppError = require("../Utils/appError");
 
 const logout = async (req, res) =>{
     const token = req.cookies.refreshToken;
     if(!token){
-        return res.status(401).json({
-            success: false,
-            message: "Missing token. Login first"
-        });
+        throw new AppError("Missing token. Login first", 401);
     }
     const hashToken = hashRefreshToken(token);
-    try{
     const valid = await TokenFamily.findOne({ tokenHash: hashToken }); 
     if(!valid || valid.expiresAt < Date.now() || valid.revoked){
-        return res.status(401).json({
-            success: false,
-            message: "Invalid or revoked token"
-        });
+        throw new AppError("Invalid or revoked token", 401);
     }
     await TokenFamily.findByIdAndUpdate(valid._id,
         { revoked: true, revokedAt: new Date() }
@@ -27,13 +21,7 @@ const logout = async (req, res) =>{
         success: true,
         message: "Logout successful!"
     });
-}
-catch(error){
-    return res.status(500).json({
-        success: false,
-        message: "Internal server error"
-    });
-}
+
 }
 
 module.exports = logout;

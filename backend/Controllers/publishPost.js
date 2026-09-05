@@ -1,12 +1,10 @@
+const AppError = require("../Utils/appError");
+
 const publishPost = async (req, res) =>{
     const post = req.post;
     if (post.status === "published") {
-        return res.status(409).json({
-            success: false,
-            message: "Post is already published"
-        });
+        throw new AppError("Post is already published", 400);
     }
-    try{
     post.status = "published";
     await post.save()
     res.status(200).json({
@@ -14,13 +12,6 @@ const publishPost = async (req, res) =>{
         message: "Post published",
         post
     });
-}
-catch(error){
-    return res.status(500).json({
-        success: false,
-        message: "Internal server error"
-    });
-}
 }
 
 module.exports = publishPost;

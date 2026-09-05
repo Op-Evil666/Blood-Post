@@ -1,30 +1,17 @@
 const Post = require("../Models/postSchema");
+const AppError = require("../Utils/appError");
 
 const authorizePostMiddleware = async (req, res, next) =>{
-    try{
         const post = await Post.findById(req.params.id);
         if(!post){
-            return res.status(404).json({
-                success: false,
-                message: "Post not found"
-            });
+            throw new AppError("Post not found", 404);
         }
         if(post.author.toString() !== req.user.userId)
         {
-            return res.status(403).json({
-                success: false,
-                message: "You are not authorized to make changes"
-            });
+            throw new AppError("You are not authorized to perform this action", 403);
         }
         req.post = post;
         next();
-    }
-    catch(error){
-        res.status(500).json({
-            success: false,
-            message: "Internal server error"
-        });
-    }
 }
 
 module.exports = authorizePostMiddleware;

@@ -1,41 +1,36 @@
 const User = require("../Models/userSchema.js");
 const { hashPassword } = require("../Utils/passwordUtils.js");
+const { generateOtp, hashOtp } = require("../Utils/otpUtils");
+const { sendVerificationEmail } = require("../Utils/emailUtils");
+const AppError = require("../Utils/appError");
+
 const registerUser = async (req, res) => {
     const { name, email, password, bio } = req.body;
         if(!name || !email || !password){
-            return res.status(400).json({
-                success: false,
-                message: "Please provide all details"
-            });
+            throw new AppError("Provide all details", 400);
         }
-        try{
             const checkEmail = email.trim().toLowerCase();
             const existingUser = await User.findOne({ email: checkEmail });
             if(existingUser){
-                return res.status(400).json({
-                    success: false,
-                    message: "User already exists"
-                })
+                throw new AppError("User already exists", 400);
             }
             const hashedPassword = await hashPassword(password);
-            await User.create({
+            const user =await User.create({
                 name,
                 email: checkEmail,
                 password: hashedPassword,
                 bio
             });
+            const otp = generateOtp();
+            const otpHash = hashOtp(otp);
+            user.verificationOtpHash = otpHash;
+            user.verificationOtpExpiresAt = new Date( Date.now() + 5 * 60 * 1000);
+            await user.save();
+            await sendVerificationEmail(user.email, otp);
             return res.status(201).json({
                 success: true,
                 message: "User registered successfully"
             });
-        }
-        catch(err){
-            console.log("Error registering user:", err.message);
-            return res.status(500).json({
-                success: false,
-                message: "Internal server error"
-            });
-        }
 }
 
 module.exports = { registerUser };

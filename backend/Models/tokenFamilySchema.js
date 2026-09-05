@@ -21,6 +21,10 @@ const tokenFamilySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    pastTokenHashes:{
+        type: [String],
+        default: []
+    },
     expiresAt:{
         type: Date,
         required: true

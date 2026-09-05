@@ -4,16 +4,19 @@ const { registerUser } = require("../Controllers/registerUser");
 const { loginUser } = require("../Controllers/loginUser");
 const refreshUser = require("../Controllers/refreshUser");
 const logout = require("../Controllers/logoutUser");
+const verifyUser = require("../Controllers/verifyUser");
 const meController = require("../Controllers/meController");
 const { validate } = require("../Middlewares/schemaMiddleware");
 const authenticate = require("../Middlewares/authMiddleware");
-const { registerLimiter, loginLimiter, refreshLimiter, apiLimiter } = require("../Middlewares/rateLimitMiddleware");
+const { registerLimiter, otpLimiter, loginLimiter, refreshLimiter, apiLimiter } = require("../Middlewares/rateLimitMiddleware");
 const { registerSchema, loginSchema } = require("../Schemas/authSchema");
+const { otpSchema } = require("../Schemas/otpSchema");
 
 router.use(apiLimiter);
 router.post("/register", registerLimiter, validate(registerSchema, "body"), registerUser);
 router.post("/login", loginLimiter, validate(loginSchema, "body"), loginUser);
 router.post("/refresh", refreshLimiter, refreshUser);
+router.post("/verify-otp", otpLimiter, validate(otpSchema, "body"), verifyUser);
 router.post("/logout", logout);
 router.get("/me", authenticate, meController);
 

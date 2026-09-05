@@ -1,7 +1,6 @@
 const updatePost = async (req, res) =>{
     const post = req.post;
     const { title, content, category, tags } = req.body;
-    try{
     post.title = title;
     post.content = content;
     post.category = category;
@@ -12,13 +11,6 @@ const updatePost = async (req, res) =>{
         message: "Update successful",
         post
     });
-}
-catch(error){
-    res.status(500).json({
-    success: false,
-    message: "Internal server error"
-    });
-}
 }
 
 module.exports = updatePost;
