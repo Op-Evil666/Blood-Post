@@ -4,7 +4,9 @@ const userSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true,
+        lowercase: true
     },
     email:{
         type: String,
@@ -37,7 +39,7 @@ const userSchema = new mongoose.Schema({
         default: null,
         select: false
     },
-    verificationTopExpiresAt:{
+    verificationOtpExpiresAt:{
         type: Date,
         default: null,
         select: false

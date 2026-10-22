@@ -1,0 +1,377 @@
+
+/* BLOOD POST - HORROR THEME */
+
+.blood-home {
+  background: #100609;
+  color: #f1e5e7;
+}
+
+/* LANDING HERO */
+
+.blood-hero {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+  padding: 5rem 1.5rem 7rem;
+  background:
+    radial-gradient(ellipse at 50% 40%,
+      rgba(112, 0, 22, 0.48) 0%,
+      transparent 48%),
+    radial-gradient(ellipse at 15% 75%,
+      rgba(69, 0, 14, 0.5) 0%,
+      transparent 40%),
+    linear-gradient(180deg, #090306, #1a050b 60%, #100609);
+}
+
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.22;
+  background:
+    radial-gradient(ellipse at 20% 30%,
+      rgba(185, 20, 44, 0.15),
+      transparent 35%),
+    radial-gradient(ellipse at 80% 60%,
+      rgba(95, 0, 20, 0.25),
+      transparent 40%);
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 950px;
+  position: relative;
+  z-index: 1;
+  animation: blood-reveal 1.1s ease-out both;
+}
+
+.hero-eyebrow,
+.section-kicker {
+  color: #d44a5b;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+}
+
+.hero-eyebrow {
+  margin-bottom: 1.5rem;
+}
+
+/* Dripping-blood title */
+
+.blood-title {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding-bottom: 0.6em;
+  font-family: "Creepster", cursive;
+  font-size: clamp(4rem, 13vw, 10rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.035em;
+  color: #c90929;
+  text-shadow:
+    0 0 8px rgba(206, 0, 35, 0.7),
+    0 0 30px rgba(140, 0, 20, 0.55),
+    0 5px 0 #56000e;
+}
+
+.blood-title::after {
+  content: "";
+  position: absolute;
+  top: 76%;
+  left: 8%;
+  right: 9%;
+  height: 46px;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 6px 17px at 12% 0%,
+      #a90020 96%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 5px 24px at 29% 0%,
+      #c90929 96%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 7px 15px at 47% 0%,
+      #940019 96%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 5px 28px at 69% 0%,
+      #bd0026 96%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 6px 19px at 87% 0%,
+      #a90020 96%,
+      transparent 100%
+    );
+  filter: drop-shadow(0 3px 3px rgba(130, 0, 20, 0.5));
+}
+
+.hero-description {
+  margin-top: 1.3rem;
+  color: #d5c0c4;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.65rem);
+  line-height: 1.8;
+}
+
+.blood-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: #a90824;
+  border: 1px solid #df3049;
+  color: white;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.13em;
+  text-decoration: none;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.blood-cta:hover {
+  background: #d10d31;
+  box-shadow: 0 0 28px rgba(195, 0, 37, 0.35);
+  transform: translateY(-2px);
+}
+
+.hero-whisper {
+  margin-top: 1.25rem;
+  color: #8e6a72;
+  font-family: "IM Fell English", Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.hero-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  background: linear-gradient(
+    transparent,
+    #100609
+  );
+}
+
+/* BLOG SECTION */
+
+.blog-section {
+  scroll-margin-top: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%,
+      rgba(90, 0, 18, 0.16),
+      transparent 45%),
+    #100609;
+}
+
+.blog-section > nav {
+  border-bottom: 1px solid #3a111a;
+  background: rgba(12, 3, 6, 0.95);
+}
+
+.blog-container {
+  width: min(1150px, 100%);
+  margin: 0 auto;
+  padding: 5rem 1.5rem 6rem;
+}
+
+.section-heading {
+  margin-bottom: 2.5rem;
+}
+
+.section-heading h2 {
+  margin-top: 0.7rem;
+  color: #f3e6e9;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.section-heading > p:last-child {
+  margin-top: 0.75rem;
+  color: #bda5aa;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 1.15rem;
+}
+
+.blood-post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.blood-post-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 300px;
+  padding: 1.5rem;
+  border: 1px solid #48202a;
+  background: linear-gradient(
+    145deg,
+    #210b11,
+    #16070b 75%
+  );
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.blood-post-card:hover {
+  border-color: #a9233c;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+.post-card-top,
+.post-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.post-category {
+  color: #d64b60;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+.post-mark {
+  color: #7c2637;
+}
+
+.blood-post-card h3 {
+  margin-top: 1.5rem;
+  color: #f2e3e6;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.post-excerpt {
+  margin-top: 1rem;
+  color: #c9b3b8;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.post-card-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  color: #987c83;
+  font-size: 0.8rem;
+}
+
+.post-card-footer a {
+  color: #ee6678;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.post-card-footer a:hover {
+  color: #ff9aa7;
+}
+
+.blog-message {
+  padding: 3rem 1rem;
+  color: #c9b3b8;
+  text-align: center;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 1.2rem;
+}
+
+.blog-message h3 {
+  margin-bottom: 0.5rem;
+  color: #f2e3e6;
+  font-family: "Cinzel", Georgia, serif;
+}
+
+.blood-secondary-button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #6f2333;
+  background: #220910;
+  color: #f0cbd2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.blood-secondary-button:hover {
+  border-color: #cf304b;
+  background: #390b17;
+}
+
+.explore-all {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+@keyframes blood-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .blood-post-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .blood-hero {
+    min-height: 78vh;
+    padding-inline: 1rem;
+  }
+
+  .blood-title {
+    font-size: clamp(3.5rem, 15vw, 5.5rem);
+  }
+
+  .blood-post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-container {
+    padding: 3.5rem 1rem 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content {
+    animation: none;
+  }
+
+  .blood-post-card,
+  .blood-cta {
+    transition: none;
+  }
+}

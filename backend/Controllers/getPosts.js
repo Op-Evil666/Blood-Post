@@ -15,12 +15,12 @@ const getPosts = async (req, res) =>{
           throw new AppError("Page not found", 400);
         }
         const skip = (page - 1) * limit;
-        const posts = await Post.find({ status: "published" }).populate("author", "name -_id").skip(skip).limit(limit);
+        const posts = await Post.find({ status: "published" }).populate("author", "name -_id").sort({ createdAt: -1 }).skip(skip).limit(limit);
         res.status(200).json({
             success: true,
+            totalPages,
             posts
         });
-    
 }
 
 module.exports = getPosts;

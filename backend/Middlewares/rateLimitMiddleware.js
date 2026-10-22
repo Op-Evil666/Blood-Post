@@ -55,6 +55,15 @@ const adminLimiter = rateLimit({
     }
 });
 
+const commentLimiter = rateLimit({
+    windowMs: 1 * 60 * 60 * 1000,
+    limit: 10,
+    message:{
+        success: false,
+        message: "Too many attempts. Try again later"
+    }
+});
+
 const apiLimiter = rateLimit({
     windowMs: 1 * 60 * 60 * 1000,
     limit: 20,
@@ -64,4 +73,4 @@ const apiLimiter = rateLimit({
     }
 });
 
-module.exports = { loginLimiter, otpLimiter,refreshLimiter, registerLimiter, postLimiter, adminLimiter, apiLimiter };
+module.exports = { loginLimiter, otpLimiter,refreshLimiter, registerLimiter, postLimiter, adminLimiter, commentLimiter, apiLimiter };

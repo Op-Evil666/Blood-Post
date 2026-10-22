@@ -1,0 +1,71 @@
+
+.blood-footer {
+  background: #0b0407;
+  border-top: 1px solid #48202a;
+  color: #bda5ab;
+}
+
+.blood-footer-inner {
+  width: min(1150px, 100%);
+  min-height: 56px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.blood-footer-brand {
+  color: #d10b2f;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.blood-footer-brand span {
+  margin-left: 2px;
+  color: #b9f542;
+  font-size: 0.55rem;
+  vertical-align: top;
+}
+
+.blood-footer-copyright {
+  margin: 0;
+  color: #947b82;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.blood-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.blood-footer-links a {
+  color: #c5aeb4;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.blood-footer-links a:hover {
+  color: #b9f542;
+}
+
+@media (max-width: 650px) {
+  .blood-footer-inner {
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1rem;
+  }
+
+  .blood-footer-links {
+    gap: 1.5rem;
+  }
+}

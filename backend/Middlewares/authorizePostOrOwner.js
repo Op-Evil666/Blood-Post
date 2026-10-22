@@ -14,7 +14,7 @@ const authorizePostOrOwner = async (req, res, next) =>{
             throw new AppError("You are not authorized to make changes", 403);
         }
         req.post = post;
-        next();
+        return next();
 }
 
 module.exports = authorizePostOrOwner;

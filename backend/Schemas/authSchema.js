@@ -26,13 +26,14 @@ const registerSchema = z.object({
 });
 
 const loginSchema = z.object({
-    email: z.email()
-    .trim()
-    .toLowerCase(),
+    identifier: z.string()
+        .trim()
+        .min(1, "Email or username is required")
+        .toLowerCase(),
+
     password: z.string()
-    .min(8, "Password must be atleast 8 characters long")
-    .max(50, "Password must be less than 50 characters long")
-})
-.strict();
+        .min(8, "Password must be at least 8 characters long")
+        .max(50, "Password must be less than 50 characters long")
+}).strict();
 
 module.exports = { registerSchema, loginSchema };

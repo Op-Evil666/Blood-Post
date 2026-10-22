@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./Routes/authRoutes");
 const postRoutes = require("./Routes/postRoutes");
+const commentRoutes = require("./Routes/commentRoutes");
 const adminRoutes = require("./Routes/adminRoutes");
 const errorMiddleware = require("./Middlewares/errorMiddleware");
 const logger = require("./Utils/logger");
@@ -34,6 +35,8 @@ app.get("/", (req, res) =>{
 app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/posts", postRoutes);
+
+app.use("/api/v1", commentRoutes);
 
 app.use("/api/v1/admin", adminRoutes);
 
