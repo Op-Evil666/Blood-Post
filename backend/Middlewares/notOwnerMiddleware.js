@@ -1,4 +1,4 @@
-const AppError = require("../utils/appError");
+const AppError = require("../Utils/appError");
 
 const notOwnerMiddleware = (req, res, next) => {
   const role = req.user?.role;
