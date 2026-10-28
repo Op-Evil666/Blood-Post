@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext.js";
 
 function RequireOwner() {
   const { user, loading, isAuthenticated } = useContext(AuthContext);
