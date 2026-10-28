@@ -1,10 +1,8 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:8000/api/v1/comments";
+import { api } from "./api";
 
 const getPostComments = async (postId) => {
-  const response = await axios.get(
-    `${API_URL}/post/${postId}/comments`,
+  const response = await api.get(
+    `/post/${postId}/comments`,
     { withCredentials: true }
   );
 
@@ -12,8 +10,8 @@ const getPostComments = async (postId) => {
 };
 
 const createComment = async (postId, commentData) => {
-  const response = await axios.post(
-    `${API_URL}/post/${postId}/comment`,
+  const response = await api.post(
+    `/post/${postId}/comment`,
     commentData,
     { withCredentials: true }
   );
@@ -22,8 +20,8 @@ const createComment = async (postId, commentData) => {
 };
 
 const updateComment = async (postId, commentId, commentData) => {
-  const response = await axios.put(
-    `${API_URL}/post/${postId}/comments/${commentId}`,
+  const response = await api.put(
+    `/post/${postId}/comments/${commentId}`,
     commentData,
     { withCredentials: true }
   );
@@ -32,16 +30,16 @@ const updateComment = async (postId, commentId, commentData) => {
 };
 
 const deleteComment = async (postId, commentId) => {
-  const response = await axios.delete(
-    `${API_URL}/post/${postId}/comments/${commentId}`,
+  const response = await api.delete(
+    `/post/${postId}/comments/${commentId}`,
     { withCredentials: true }
   );
 
   return response.data;
 };
 
-const getUserComments = async (userId) =>{
-  const response = await axios.get(`${API_URL}/users/${userId}/comments`, { withCredentials: true });
+const getUserComments = async () =>{
+  const response = await api.get(`/users/comments`, { withCredentials: true });
   return response.data;
 }
 

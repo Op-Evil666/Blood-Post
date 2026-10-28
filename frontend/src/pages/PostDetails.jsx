@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getPostById, publishPost, deletePost } from "../services/postService";
+import CommentForm from "../components/comments/CommentForm";
+import CommentList from "../components/comments/CommentList";
 import { useAuth } from "../context/useAuth";
 
 function PostDetails() {
@@ -298,6 +300,24 @@ function PostDetails() {
         <div className="mt-10 whitespace-pre-wrap break-words text-base leading-8 text-[#E1D5D9] sm:text-lg">
           {post.content}
         </div>
+
+      {isPublished && (
+  <section
+    aria-label="Post comments"
+    className="mt-12 rounded-2xl border border-[#722033]
+               bg-[#16080D] p-4 sm:p-6 lg:p-8"
+  >
+    <CommentForm postId={postId} />
+
+    <div className="mt-8 border-t border-[#64202D] pt-6">
+      <CommentList
+        postId={postId}
+        postAuthorId={post?.author?._id || post?.author}
+      />
+    </div>
+  </section>
+)}
+
 
         {/* Extra publish button for the owner of a draft. */}
         {canPublish && (

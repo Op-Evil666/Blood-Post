@@ -1,13 +1,11 @@
-
 import { useEffect, useState } from "react";
-
 import { AuthContext } from "./AuthContext";
 
 import {
   loginUser as loginRequest,
   logoutUser as logoutRequest,
   getMe,
-  refreshUser
+  refreshUser,
 } from "../services/authService";
 
 import { setAccessToken } from "../services/api";
@@ -16,45 +14,44 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore the session when the app starts.
-  
-useEffect(() => {
-  let cancelled = false;
+  useEffect(() => {
+    let cancelled = false;
 
-  const restoreSession = async () => {
-    try {
-      const response = await refreshUser();
+    const restoreSession = async () => {
+      try {
+        const response = await refreshUser();
 
-      if (!response.accessToken) {
-        throw new Error("Refresh response has no access token.");
+        if (!response.accessToken) {
+          throw new Error("Refresh response has no access token.");
+        }
+
+        if (cancelled) return;
+
+        setAccessToken(response.accessToken);
+
+        const profile = await getMe();
+
+        if (!cancelled) {
+          setUser(profile.user);
+        }
+      } catch {
+        if (!cancelled) {
+          setAccessToken(null);
+          setUser(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
+    };
 
-      setAccessToken(response.accessToken);
+    restoreSession();
 
-      const profile = await getMe();
-
-      if (!cancelled) {
-        setUser(profile.user);
-      }
-    } catch {
-      setAccessToken(null);
-
-      if (!cancelled) {
-        setUser(null);
-      }
-    } finally {
-      if (!cancelled) {
-        setLoading(false);
-      }
-    }
-  };
-
-  restoreSession();
-
-  return () => {
-    cancelled = true;
-  };
-}, []);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const login = async (loginData) => {
     const response = await loginRequest(loginData);
@@ -67,6 +64,7 @@ useEffect(() => {
 
     try {
       const profile = await getMe();
+
       setUser(profile.user);
       return profile.user;
     } catch (error) {

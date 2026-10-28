@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./Routes/authRoutes");
 const postRoutes = require("./Routes/postRoutes");
 const commentRoutes = require("./Routes/commentRoutes");
-const adminRoutes = require("./Routes/adminRoutes");
+const ownerRoutes = require("./Routes/ownerRoutes");
 const errorMiddleware = require("./Middlewares/errorMiddleware");
 const logger = require("./Utils/logger");
 const pinoHttp = require("pino-http");
@@ -38,7 +38,7 @@ app.use("/api/v1/posts", postRoutes);
 
 app.use("/api/v1", commentRoutes);
 
-app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/owner", ownerRoutes);
 
 app.use(errorMiddleware);
 

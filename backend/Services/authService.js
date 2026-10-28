@@ -5,32 +5,84 @@ const UUID = require("uuid");
 const TokenFamily = require("../Models/tokenFamilySchema");
 const { hashPassword, verifyPassword } = require("../Utils/passwordUtils.js");
 const { generateOtp, hashOtp } = require("../Utils/otpUtils");
+const { sendVerificationEmail } = require("../Utils/emailUtils");
 const AppError = require("../Utils/appError");
 
-const registerService = async (registerData) =>{
+const registerService = async (registerData) => {
     const { name, email, password, bio } = registerData;
-        if(!name || !email || !password){
-            throw new AppError("Provide all details", 400);
+    if (
+        typeof name !== "string" ||
+        typeof email !== "string" ||
+        typeof password !== "string" ||
+        !name.trim() ||
+        !email.trim() ||
+        !password
+    ) {
+        throw new AppError("Provide all required details", 400);
+    }
+    const normalizedName = name.trim().toLowerCase();
+    const normalizedEmail = email.trim().toLowerCase();
+    const existingUser = await User.findOne({
+        $or: [
+            { email: normalizedEmail },
+            { name: normalizedName },
+        ],
+    });
+    if (existingUser) {
+        throw new AppError("Username or email is already registered", 409);
+    }
+    const hashedPassword = await hashPassword(password);
+    let user;
+    try {
+        user = await User.create({
+            name: normalizedName,
+            email: normalizedEmail,
+            password: hashedPassword,
+            bio,
+            isVerified: false,
+            verificationOtpHash: null,
+            verificationOtpExpiresAt: null,
+            verificationOtpAttempts: 0,
+            verificationOtpLastSentAt: null,
+            verificationOtpLockedUntil: null,
+        });
+    } catch (error) {
+        // Handle unique-index conflicts, including concurrent registrations.
+        if (error.code === 11000) {
+            throw new AppError(
+                "Username or email is already registered",
+                409
+            );
         }
-            const checkEmail = email.trim().toLowerCase();
-            const existingUser = await User.findOne({ email: checkEmail });
-            if(existingUser){
-                throw new AppError("User already exists", 400);
-            }
-            const hashedPassword = await hashPassword(password);
-            const user =await User.create({
-                name,
-                email: checkEmail,
-                password: hashedPassword,
-                bio
-            });
-            const otp = generateOtp();
-            const otpHash = hashOtp(otp);
-            user.verificationOtpHash = otpHash;
-            user.verificationOtpExpiresAt = new Date( Date.now() + 5 * 60 * 1000);
-            await user.save();
-            return user;
-}
+        throw error;
+    }
+    const otp = generateOtp();
+    const otpHash = hashOtp(otp);
+    const now = new Date();
+    user.verificationOtpHash = otpHash;
+    user.verificationOtpExpiresAt = new Date(
+        now.getTime() + 5 * 60 * 1000
+    );
+    user.verificationOtpAttempts = 0;
+    user.verificationOtpLastSentAt = now;
+    user.verificationOtpLockedUntil = null;
+    await user.save();
+    try {
+        await sendVerificationEmail(user.email, otp);
+    } catch (error) {
+        // Keep the account so the user can request another OTP.
+        // Log only safe operational details, never the OTP or credentials.
+        console.error("Verification email delivery failed", {
+            userId: user._id.toString(),
+            errorCode: error.code || "UNKNOWN",
+        });
+        throw new AppError(
+            "Your account was created, but the verification email could not be sent. Please request another OTP.",
+            503
+        );
+    }
+    return user;
+};
 
 const loginService = async (loginData, res) =>{
     const { password } = loginData;

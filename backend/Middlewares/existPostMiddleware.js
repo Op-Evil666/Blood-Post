@@ -7,6 +7,7 @@ const existPostMiddleware = async (req, res, next) =>{
     if(!post || post.status !== "published"){
         throw new AppError("Post Not Found", 404);
     }
+    req.post = post;
     next();
 }
 

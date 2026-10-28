@@ -11,6 +11,9 @@ import CreatePost from "../pages/CreatePost";
 import RequireAuth from "../components/RequireAuth";
 import NotFound from "../pages/NotFound";
 import UpdatePost from "../pages/UpdatePost";
+import VerifyEmail from "../pages/VerifyEmail";
+import RequireOwner from "../components/RequireOwner";
+import OwnerDashboard from "../pages/OwnerDashboard";
 
 function AppRoutes() {
   return (
@@ -21,10 +24,15 @@ function AppRoutes() {
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
 
       <Route element={<RequireAuth />}>
         <Route path="/posts/create" element={<CreatePost />} />
         <Route path="/posts/:postId/edit" element={<UpdatePost />} />
+      </Route>
+
+      <Route element={<RequireOwner />}>
+          <Route path="/owner" element={<OwnerDashboard />} />
       </Route>
 
       <Route path="/posts/:postId" element={<PostDetails />} />

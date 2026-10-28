@@ -44,6 +44,22 @@ const userSchema = new mongoose.Schema({
         default: null,
         select: false
     },
+    verificationOtpAttempts: {
+        type: Number,
+        default: 0,
+        min: 0,
+        select: false
+    },
+    verificationOtpLastSentAt: {
+        type: Date,
+        default: null,
+        select: false
+    },
+    verificationOtpLockedUntil: {
+        type: Date,
+        default: null,
+        select: false
+    },
     lastLogin:{
         type: Date,
         default: null

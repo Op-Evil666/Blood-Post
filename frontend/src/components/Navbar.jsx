@@ -39,8 +39,24 @@ function Navbar() {
   const profileButtonClass =
     "inline-flex items-center justify-center gap-1 rounded-lg border border-[#FF304F]/50 bg-[#19090F] px-4 py-2.5 font-bold text-[#FF526B] shadow-[0_0_12px_rgba(255,48,79,0.15)] transition duration-300 hover:border-[#FF304F] hover:bg-[#350B16] hover:text-[#FF7188] hover:shadow-[0_0_18px_rgba(255,48,79,0.3)]";
 
+  const ownerDashboardClass =
+    "inline-flex items-center justify-center gap-2 rounded-lg border border-[#FF304F]/60 bg-[#19090F] px-5 py-3 text-center font-bold tracking-wide text-[#FF526B] shadow-[0_0_14px_rgba(255,48,79,0.18)] transition duration-300 hover:border-[#FF304F] hover:bg-[#350B16] hover:text-[#FF7188] hover:shadow-[0_0_22px_rgba(255,48,79,0.4)]";
+
+  const isOwner = !loading && isAuthenticated && user?.role === "owner";
+
   const renderNavigation = () => (
     <>
+      {isOwner && (
+        <Link
+          to="/owner"
+          onClick={closeMenu}
+          className={`${ownerDashboardClass} lg:hidden`}
+        >
+          <span aria-hidden="true">☠</span>
+          Owner Dashboard
+        </Link>
+      )}
+
       <Link to="/home" onClick={closeMenu} className={linkClass}>
         Home
       </Link>
@@ -78,8 +94,8 @@ function Navbar() {
             <span className="text-[#B9F542]">Hi,</span>
             <span className="max-w-[140px] truncate">
               {user?.name
-  ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
-  : "User"}
+                ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
+                : "User"}
             </span>
           </Link>
 
@@ -127,11 +143,12 @@ function Navbar() {
       />
 
       <div className="mx-auto flex min-h-[100px] max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
+        {/* Blood Post logo */}
         <Link
           to="/"
           onClick={closeMenu}
           className="
-            font-horror-logo text-3xl tracking-wide text-[#E31B3F]
+            shrink-0 font-horror-logo text-2xl tracking-wide text-[#E31B3F]
             drop-shadow-[0_0_6px_rgba(227,27,63,0.3)]
             transition duration-300 hover:drop-shadow-[0_0_12px_rgba(227,27,63,0.65)]
             sm:text-4xl
@@ -140,10 +157,24 @@ function Navbar() {
           Blood Post
         </Link>
 
+        {/* Owner-only dashboard link, centered between logo and navigation */}
+        {isOwner && (
+          <Link
+            to="/owner"
+            onClick={closeMenu}
+            className={`${ownerDashboardClass} hidden lg:inline-flex`}
+          >
+            <span aria-hidden="true">☠</span>
+            Owner Dashboard
+          </Link>
+        )}
+
+        {/* Desktop navigation */}
         <div className="hidden items-center gap-5 lg:flex">
           {renderNavigation()}
         </div>
 
+        {/* Mobile menu toggle */}
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
@@ -152,7 +183,13 @@ function Navbar() {
             font-bold text-[#E1F3D8] transition duration-300
             hover:bg-[#A6DC37] hover:text-[#100609]
             lg:hidden
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-[#39FF14]
+            focus-visible:ring-offset-2
+            focus-visible:ring-offset-[#100609]
           "
+          aria-controls="mobile-navigation"
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
         >
@@ -160,8 +197,10 @@ function Navbar() {
         </button>
       </div>
 
+      {/* Mobile dropdown */}
       {menuOpen && (
         <div
+          id="mobile-navigation"
           className="
             flex flex-col gap-4 border-t border-[#39FF14]/30
             bg-[#100609] px-5 py-5

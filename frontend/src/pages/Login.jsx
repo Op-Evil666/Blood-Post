@@ -179,16 +179,29 @@ function Login() {
             </button>
           </form>
 
-          {/* Registration */}
-          <p className="mt-8 text-center text-sm text-[#C8AEB7]">
-            New to this place?{" "}
-            <Link
-              to="/register"
-              className="font-bold text-[#B9F542] transition duration-300 hover:text-[#FF304F] hover:drop-shadow-[0_0_8px_rgba(255,48,79,0.7)]"
-            >
-              Register
-            </Link>
-          </p>
+{/* Registration and email verification */}
+<div className="mt-8 space-y-5 text-center">
+  <p className="text-sm text-[#C8AEB7]">
+    New to this place?{" "}
+    <Link
+      to="/register"
+      className="font-bold text-[#B9F542] transition duration-300 hover:text-[#FF304F] hover:drop-shadow-[0_0_8px_rgba(255,48,79,0.7)]"
+    >
+      Register
+    </Link>
+  </p>
+
+  <p className="text-sm leading-6 text-[#B7A7AC]">
+    Already registered but haven't verified your email?{" "}
+    <Link
+      to="/verify-email"
+      className="font-semibold text-[#FF637C] underline-offset-4 transition hover:text-[#FFA0AF] hover:underline"
+    >
+      Verify your email
+    </Link>
+  </p>
+</div>
+
 
           {/* Decorative footer */}
           <div className="mt-8 flex items-center justify-center gap-3">

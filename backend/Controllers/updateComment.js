@@ -13,7 +13,7 @@ const updateComment = async (req, res) =>{
     if(comment.author.toString()!== userId.toString()){
         throw new AppError("Not authorized to modify comment", 403);
     }
-    const updatedComment = await Comment.findOneAndUpdate({ _id: commentId, post: id}, { $set: {content}}, { new: true, runValidators: true });
+    const updatedComment = await Comment.findOneAndUpdate({ _id: commentId, post: id}, { $set: {content}}, { returnDocument: "after", runValidators: true });
     return res.status(200).json({
         success: true, message: "Comment updated successfully",updatedComment
     });

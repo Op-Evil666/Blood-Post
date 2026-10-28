@@ -10,7 +10,7 @@ export const api = axios.create({
   },
 });
 
-// Access token exists in memory only.
+// Access token remains in memory only.
 let accessToken = null;
 let refreshPromise = null;
 
@@ -20,31 +20,36 @@ export const setAccessToken = (token) => {
 
 api.interceptors.request.use((config) => {
   if (accessToken) {
+    config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
 
   return config;
 });
 
+const isExcludedFromRefresh = (url = "") => {
+  const path = url.split("?")[0].replace(/\/+$/, "");
+
+  return (
+    path === "/auth/login" ||
+    path === "/auth/register" ||
+    path === "/auth/refresh" ||
+    path === "/auth/logout" ||
+    /^\/auth\/verify-otp\/[^/]+$/.test(path) ||
+    /^\/auth\/resend-otp\/[^/]+$/.test(path)
+  );
+};
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const url = originalRequest?.url || "";
-
-    const excludedUrls = [
-      "/auth/login",
-      "/auth/register",
-      "/auth/refresh",
-      "/auth/logout",
-      "/auth/verify-otp",
-    ];
 
     if (
       error.response?.status !== 401 ||
       !originalRequest ||
       originalRequest._retry ||
-      excludedUrls.some((path) => url.includes(path))
+      isExcludedFromRefresh(originalRequest.url)
     ) {
       return Promise.reject(error);
     }
@@ -52,7 +57,6 @@ api.interceptors.response.use(
     originalRequest._retry = true;
 
     try {
-      // Share one refresh request if several requests fail together.
       if (!refreshPromise) {
         refreshPromise = axios
           .post(
@@ -77,6 +81,7 @@ api.interceptors.response.use(
 
       const newToken = await refreshPromise;
 
+      originalRequest.headers = originalRequest.headers || {};
       originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
       return api(originalRequest);
