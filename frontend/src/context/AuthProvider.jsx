@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./authContext.js";
 
 import {
   loginUser as loginRequest,
